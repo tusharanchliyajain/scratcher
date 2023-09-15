@@ -229,6 +229,10 @@ class ScratcherState extends State<Scratcher> {
     }) async {
       return ui.instantiateImageCodec(bytes);
     }).addListener(ImageStreamListener((ImageInfo image, _) {
+      if (completer.isCompleted) {
+        return;
+      }
+
       completer.complete(image.image);
     }));
 
