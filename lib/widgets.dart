@@ -221,20 +221,23 @@ class ScratcherState extends State<Scratcher> {
     final imageProvider = image.image as dynamic;
     final key = await imageProvider.obtainKey(ImageConfiguration.empty);
 
-    imageProvider.load(key, (
-      Uint8List bytes, {
-      int? cacheWidth,
-      int? cacheHeight,
-      bool? allowUpscaling,
+    imageProvider.loadImage(key, (
+      ImmutableBuffer buffer, {
+      ui.TargetImageSizeCallback? getTargetSize,
     }) async {
-      return ui.instantiateImageCodec(bytes);
-    }).addListener(ImageStreamListener((ImageInfo image, _) {
-      if (completer.isCompleted) {
-        return;
-      }
+      return ui.instantiateImageCodecWithSize(
+        buffer,
+        getTargetSize: getTargetSize,
+      );
+    }).addListener(
+      ImageStreamListener((ImageInfo image, _) {
+        if (completer.isCompleted) {
+          return;
+        }
 
-      completer.complete(image.image);
-    }));
+        completer.complete(image.image);
+      }),
+    );
 
     return completer.future;
   }

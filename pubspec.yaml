@@ -6,13 +6,13 @@ version: 2.4.0
 
 environment:
   sdk: ">=3.0.5 <4.0.0"
-  flutter: ">=3.13.0"
+  flutter: ">=3.10.6"
 
 dependencies:
   flutter:
     sdk: flutter
 
 dev_dependencies:
-  lint:
   flutter_test:
     sdk: flutter
+  lint: null
